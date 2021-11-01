@@ -1,0 +1,7 @@
+# PostgreSQL
+# ------------------------------------------------------------------------------
+POSTGRES_HOST=postgres
+POSTGRES_PORT=5432
+POSTGRES_DB=bakersoft
+POSTGRES_USER=aaOmRTIApqjmgfbPwHPddqYsbYtPhFKP
+POSTGRES_PASSWORD=wjX9k3RvSP3voHCOX7BoYWzNqwhgPgssstGyO91GxpAFPIUa1oQMJC43wpWC4UKd

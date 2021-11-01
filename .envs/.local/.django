@@ -1,0 +1,20 @@
+# General
+# ------------------------------------------------------------------------------
+USE_DOCKER=yes
+IPYTHONDIR=/app/.ipython
+# Super User
+DJANGO_SUPERUSER_USERNAME=testadmin@testapi.com
+DJANGO_SUPERUSER_EMAIL=testadmin@testapi.com
+DJANGO_SUPERUSER_PASSWORD=123asX3?23
+
+# Redis
+# ------------------------------------------------------------------------------
+REDIS_URL=redis://redis:6379/0
+
+# Celery
+# ------------------------------------------------------------------------------
+CELERY_BROKER_URL=redis://redis:6379/0
+
+# Flower
+CELERY_FLOWER_USER=QHcslsBxjcypvBQliVZGMJVYVNSapeGm
+CELERY_FLOWER_PASSWORD=sNs3DrwXS2FX9vw48ic2PdlSRF6dl67hENtwAVm5JBhLICxxaMgj4eJ7hH4yALBV
