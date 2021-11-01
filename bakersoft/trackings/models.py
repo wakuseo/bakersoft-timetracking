@@ -50,6 +50,9 @@ class Project(BakerBaseAbstractModel):
             if work.status == "done":
                 raise ProjectCompleteException(work)
 
+        self.status == "done"
+        self.save()
+
     @property
     def owner(self):
         """Alias for project owner"""
