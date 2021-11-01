@@ -46,26 +46,17 @@ start: setup runserver # Setup the project and run the dev server
 
 setup: install setup-db # Setup the project
 
-.PHONY: check-python
-check-python: ## Check required python version
-	$(SCRIPTS)/local/check-python.sh
-
 .PHONY: install
-install: check-python
+install:
 	$(PYTHON_VER) -m venv $(VENV) && \
 		source $(BIN)/activate && \
 		$(PYTHON) -m pip install -r $(CURDIR)/requirements-local.txt
 
 .PHONY: setup-db
-setup-db: load-db createsuperuser ## Load db and createsuperuser
-
-.PHONY: load-db
-load-db:
-	$(PYTHON) setup_and_seed.py
-
-.PHONY: createsuperuser
-createsuperuser:
+setup-db: ## Load db and createsuperuser
+	$(MANAGE) migrate
 	$(MANAGE) createsuperuser --no-input
+	$(PYTHON) $(ROOT)/populate_db.py
 
 .PHONY: clean-db
 restart-db: clean-db setup-db  ## Delete then setup db
