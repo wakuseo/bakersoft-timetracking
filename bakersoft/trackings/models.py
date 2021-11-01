@@ -2,6 +2,7 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 from bakersoft.core.models import USER, AbstractBaseUserModel
+from bakersoft.trackings.exceptions import ProjectCompleteException
 
 
 class BakerBaseAbstractModel(AbstractBaseUserModel):
@@ -17,7 +18,6 @@ class BakerBaseAbstractModel(AbstractBaseUserModel):
         choices=StatusChoices.choices,
         default=StatusChoices.PROGRESS,
     )
-    completed = models.BooleanField(default=False)
 
     class Meta:
         abstract = True
@@ -37,17 +37,35 @@ class Project(BakerBaseAbstractModel):
         return f"{self.name} - {self.manager}"
 
     @property
+    def completed(self):
+        """Helper to check whether work completed"""
+        if self.status == "done":
+            return True
+
+        return False
+
+    def complete(self):
+        """Update status to done if there is no in <progress> status in any related work"""
+        for work in self.works:
+            if work.status == "done":
+                raise ProjectCompleteException(work)
+
+    @property
     def owner(self):
         """Alias for project owner"""
         return self.manager
 
     @property
+    def works(self):
+        """Get all related works"""
+        return self.work_set.all()
+
+    @property
     def elapsed_time(self):
-        """Sum all works' elapsed time which equals to project's elapsed time"""
+        """Sum all works' duration in milisecond which equals to project's elapsed time in"""
         import datetime
 
-        works = self.work_set.all()
-        works_elapsed_time = [work.elapsed_time for work in works]
+        works_elapsed_time = [work.elapsed_time for work in self.works]
 
         return sum(works_elapsed_time, datetime.timedelta())
 
@@ -64,13 +82,27 @@ class Work(BakerBaseAbstractModel):
         return self.name
 
     @property
+    def completed(self):
+        """Helper to check whether work completed"""
+        if self.status == "done":
+            return True
+
+        return False
+
+    def complete(self):
+        """Update status to done"""
+        self.status = "done"
+        self.save()
+
+    @property
     def completed_at(self):
+        """Get completed timestamp if completed"""
         if self.completed:
             return self.changed_at
 
     @property
     def elapsed_time(self):
-        """Get elapsed time for the work instance
+        """Get duration for the work instance in microsecond
 
         If a work not completed get difference between current and started time
         No need to sent timezone in python since TIME_ZONE = UTC set already in base settings
