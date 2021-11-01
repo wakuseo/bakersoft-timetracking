@@ -16,7 +16,14 @@ class ProjectAdmin(admin.ModelAdmin):
 
 @admin.register(Work)
 class WorkAdmin(admin.ModelAdmin):
-    list_display = ["name", "status", "completed", "completed_at", "elapsed_time", "uuid"]
+    list_display = [
+        "name",
+        "status",
+        "completed",
+        "completed_at",
+        "elapsed_time",
+        "uuid",
+    ]
     list_filter = ["created_at", "changed_at"]
     search_fields = [
         "name",
