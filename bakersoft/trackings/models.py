@@ -39,19 +39,18 @@ class Project(BakerBaseAbstractModel):
     @property
     def completed(self):
         """Helper to check whether work completed"""
-        if self.status == "done":
+        if self.status == self.StatusChoices.DONE.value:
             return True
 
         return False
 
     def complete(self):
         """Update status to done if there is no in <progress> status in any related work"""
-        breakpoint()
         for work in self.works:
-            if work.status != "done":
+            if work.status != self.StatusChoices.DONE.value:
                 raise ProjectCompleteException(work)
 
-        self.status = "done"
+        self.status = self.StatusChoices.DONE.value
         self.save(update_fields=["status"])
 
     @property
@@ -88,14 +87,14 @@ class Work(BakerBaseAbstractModel):
     @property
     def completed(self):
         """Helper to check whether work completed"""
-        if self.status == "done":
+        if self.status == self.StatusChoices.DONE.value:
             return True
 
         return False
 
     def complete(self):
         """Update status to done"""
-        self.status = "done"
+        self.status = self.StatusChoices.DONE.value
         self.save(update_fields=["status"])
 
     @property
