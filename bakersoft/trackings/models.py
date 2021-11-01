@@ -46,12 +46,13 @@ class Project(BakerBaseAbstractModel):
 
     def complete(self):
         """Update status to done if there is no in <progress> status in any related work"""
+        breakpoint()
         for work in self.works:
-            if work.status == "done":
+            if work.status != "done":
                 raise ProjectCompleteException(work)
 
-        self.status == "done"
-        self.save()
+        self.status = "done"
+        self.save(update_fields=["status"])
 
     @property
     def owner(self):
@@ -95,7 +96,7 @@ class Work(BakerBaseAbstractModel):
     def complete(self):
         """Update status to done"""
         self.status = "done"
-        self.save()
+        self.save(update_fields=["status"])
 
     @property
     def completed_at(self):
