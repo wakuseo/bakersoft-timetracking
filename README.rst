@@ -3,14 +3,51 @@ BakerSoft
 
 Time tracking app
 
-.. image:: https://img.shields.io/badge/built%20with-Cookiecutter%20Django-ff69b4.svg?logo=cookiecutter
-     :target: https://github.com/cookiecutter/cookiecutter-django/
-     :alt: Built with Cookiecutter Django
 .. image:: https://img.shields.io/badge/code%20style-black-000000.svg
      :target: https://github.com/ambv/black
      :alt: Black code style
 
 :License: BSD
+
+Create and track duration of your works and projects.
+
+Setup
+-----
+
+Local
+^^^^^
+
+To setup project on your host os just run::
+
+    $ make start
+
+It will:
+
+* setup virtual environment,
+* install requirements,
+* create migrations,
+* load db with dummy data,
+* create superuser,
+* then start the django dev server on port `:8000`
+
+Endpoints
+---------
+
+* `/api/projects/` - List all projects or create one
+* `/api/projects/id/` - Get, delete, udpate single project
+* `/api/projects/id/complete/` - Complete single project
+* `/api/works/` - List all works and create one
+* `/api/works/id/` - Get, delete, udpate single work
+* `/api/works/id/complete/` - Complete single work
+
+Additional Logic
+----------------
+
+- Get a project's duration from all of it's works
+- If a work completed it's duration calculated by `completed_at - created_at`
+- If a work not completed it's duration calculated by `now - created_at`
+- You can't complete a project unless *ALL* of it's works completed
+
 
 Settings
 --------

@@ -114,6 +114,6 @@ class Work(BakerBaseAbstractModel):
         from django.utils import timezone
 
         if self.completed:
-            return self.changed_at - self.created_at
+            return self.completed_at - self.created_at
 
         return timezone.now() - self.created_at
